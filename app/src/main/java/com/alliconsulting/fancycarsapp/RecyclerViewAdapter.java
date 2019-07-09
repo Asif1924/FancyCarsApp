@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -47,12 +48,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 .asBitmap()
                 .load(mImages.get(position))
                 .into(holder.image);
+
         holder.imageName.setText(mImageNames.get(position));
         holder.parentLayout.setOnClickListener(new View.OnClickListener(){
-
             public void onClick(View view){
                 Log.d(TAG,"onClick: clicked on: " + mImageNames.get(position));
-
                 Toast.makeText(mContext,mImageNames.get(position), Toast.LENGTH_SHORT).show();
             }
         });
@@ -65,15 +65,16 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     public class ViewHolder extends RecyclerView.ViewHolder{
 
-        CircleImageView image;
+        //CircleImageView image;
+        ImageView image;
         TextView imageName;
         RelativeLayout parentLayout;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            image = itemView.findViewById(R.id.image);
-            imageName = itemView.findViewById(R.id.image_name);
-            parentLayout = itemView.findViewById(R.id.parent_layout);
+            image = itemView.findViewById(R.id.car_image);
+            imageName = itemView.findViewById(R.id.car_name);
+            parentLayout = itemView.findViewById(R.id.car_simple_layout);
         }
     }
 
