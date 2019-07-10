@@ -2,7 +2,7 @@
 This app shows the use of a RecyclerView with Pagination
 
 
-Imagine that you are hired by FancyCars.ca. FancyCars.ca has asked you to build an App. In this app they want to:
+Imagine that you are hired by FancyCars.ca to build an App. In this App they want to:
 
 1.	Show list of all the cars and for each car, they want to show picture, name, make, model and availability of the car. 
 2.	Your app should support infinite scroll for the listing of the cars
