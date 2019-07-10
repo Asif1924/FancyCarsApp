@@ -13,6 +13,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.alliconsulting.fancycarsapp.model.CarDetails;
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
@@ -22,14 +23,17 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>{
     private static final String TAG = "RecyclerViewAdapter";
-    private ArrayList<String> mImageNames = new ArrayList<>();
+
     private ArrayList<String> mImages = new ArrayList<>();
+    private ArrayList<CarDetails> mCarDetails = new ArrayList<>();
+
     private Context mContext;
 
-    public RecyclerViewAdapter( Context mContext, ArrayList<String> mImageNames, ArrayList<String> mImages) {
-        this.mImageNames = mImageNames;
-        this.mImages = mImages;
-        this.mContext = mContext;
+    public RecyclerViewAdapter(Context context, ArrayList<String> images, ArrayList<CarDetails> carDetails) {
+
+        this.mImages = images;
+        this.mCarDetails = carDetails;
+        this.mContext = context;
     }
 
     @NonNull
@@ -49,18 +53,20 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 .load(mImages.get(position))
                 .into(holder.image);
 
-        holder.imageName.setText(mImageNames.get(position));
+        //holder.imageName.setText(mImageNames.get(position));
+        holder.imageName.setText( "Make: " + mCarDetails.get(position).getCarMake() + "\nModel: " + mCarDetails.get(position).getCarModel() + "\nAvail?: " + mCarDetails.get(position).getAvailability());
         holder.parentLayout.setOnClickListener(new View.OnClickListener(){
             public void onClick(View view){
-                Log.d(TAG,"onClick: clicked on: " + mImageNames.get(position));
-                Toast.makeText(mContext,mImageNames.get(position), Toast.LENGTH_SHORT).show();
+                //Log.d(TAG,"onClick: clicked on: " + mImageNames.get(position));
+                Log.d(TAG,"onClick: clicked on: " + mCarDetails.get(position).getCarMake());
+                Toast.makeText(mContext,mCarDetails.get(position).getCarMake(), Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     @Override
     public int getItemCount() {
-        return mImageNames.size();
+        return mCarDetails.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
@@ -78,9 +84,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         }
     }
 
-    public void updateListWithImages(List<String> newImages, List<String> newNames){
+    public void updateListWithImages(List<String> newImages, List<CarDetails> carDetails){
         mImages.addAll(newImages);
-        mImageNames.addAll(newNames);
+        mCarDetails.addAll(carDetails);
         notifyDataSetChanged();
     }
 

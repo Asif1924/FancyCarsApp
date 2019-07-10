@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.alliconsulting.fancycarsapp.model.CarDetails;
 import com.github.javafaker.Faker;
 
 import java.util.ArrayList;
@@ -18,8 +19,9 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
 
-    private ArrayList<String> mNames = new ArrayList<>();
     private ArrayList<String> mImageUrls = new ArrayList<>();
+    private ArrayList<CarDetails> mCarDetails = new ArrayList<>();
+
     RecyclerView recyclerView = null;
     RecyclerViewAdapter adapter = null;
     LinearLayoutManager layoutManager = null;
@@ -27,10 +29,11 @@ public class MainActivity extends AppCompatActivity {
     private boolean isLoading = true;
     private int pastVisibleItems, visibleItemCount, totalItemCount, previousTotal = 0;
 
-    private final int item_size = 20;
+    private final int gulp_size = 20;
     private ArrayList<String> carImages = null;
-    private int viewThreadhold = 10;
+    private int viewThreshold = 10;
 
+    private Faker carDetailsFaker = null;
 
     private void stubCarImages(){
         carImages = new ArrayList<>();
@@ -62,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        carDetailsFaker = new Faker();
         stubCarImages();
 
         recyclerView = findViewById(R.id.recycler_view);
@@ -87,8 +90,8 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
 
-                    if(!isLoading && (totalItemCount-visibleItemCount)<=(pastVisibleItems+viewThreadhold)){
-                        Toast.makeText(MainActivity.this, "about to performing pagination...", Toast.LENGTH_SHORT).show();
+                    if(!isLoading && (totalItemCount-visibleItemCount)<=(pastVisibleItems+viewThreshold)){
+                        //Toast.makeText(MainActivity.this, "about to performing pagination...", Toast.LENGTH_SHORT).show();
                         performPagination();
                         isLoading=true;
                     }
@@ -104,8 +107,8 @@ public class MainActivity extends AppCompatActivity {
 
         Random rand = new Random(System.currentTimeMillis());
         int randInt = 0;
-        for(int i=0;i<item_size;i++) {
-            randInt = rand.nextInt(item_size);
+        for(int i = 0; i< gulp_size; i++) {
+            randInt = rand.nextInt(gulp_size);
             newRandomizedURLs.add(carImages.get(randInt));
         }
         return newRandomizedURLs;
@@ -114,25 +117,32 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<String> randomizeImageNames(){
         ArrayList<String> newRandomizedNames = new ArrayList<>();
 
-        Faker nameFaker = new Faker();
-        for(int i=0;i<item_size;i++) {
-            newRandomizedNames.add(nameFaker.name().fullName());
+        for(int i = 0; i< gulp_size; i++) {
+            newRandomizedNames.add(carDetailsFaker.name().fullName());
         }
         return newRandomizedNames;
+    }
+
+    private ArrayList<CarDetails> randomizeCarDetails(){
+        ArrayList<CarDetails> newRandomizedCarDetails = new ArrayList<>();
+        for(int i = 0; i< gulp_size; i++) {
+            newRandomizedCarDetails.add(new CarDetails(carDetailsFaker));
+        }
+        return newRandomizedCarDetails;
     }
 
     private void initImageBitMaps(){
         Log.d(TAG,"initImageBitMaps: preparing bitmaps.");
 
         mImageUrls.addAll(randomizeImageURLs());
-        mNames.addAll(randomizeImageNames());
+        mCarDetails.addAll(randomizeCarDetails());
         initRecyclerView();
     }
 
     private void initRecyclerView(){
         Log.d(TAG,"initRecyclerView: init");
 
-        adapter = new RecyclerViewAdapter(this,mNames,mImageUrls);
+        adapter = new RecyclerViewAdapter(this,mImageUrls,mCarDetails);
         recyclerView.setAdapter(adapter);
         recyclerView.hasFixedSize();
         recyclerView.setLayoutManager(layoutManager);
@@ -140,6 +150,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void performPagination(){
         Toast.makeText(MainActivity.this, "performing pagination...", Toast.LENGTH_SHORT).show();
-        adapter.updateListWithImages(randomizeImageURLs(),randomizeImageNames());
+        adapter.updateListWithImages(randomizeImageURLs(),randomizeCarDetails());
     }
 }
