@@ -91,7 +91,6 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                     if(!isLoading && (totalItemCount-visibleItemCount)<=(pastVisibleItems+viewThreshold)){
-                        //Toast.makeText(MainActivity.this, "about to performing pagination...", Toast.LENGTH_SHORT).show();
                         performPagination();
                         isLoading=true;
                     }
@@ -149,7 +148,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void performPagination(){
-        Toast.makeText(MainActivity.this, "performing pagination...", Toast.LENGTH_SHORT).show();
+        Toast.makeText(MainActivity.this, "Getting more cars...", Toast.LENGTH_SHORT).show();
         adapter.updateListWithImages(randomizeImageURLs(),randomizeCarDetails());
     }
 }
