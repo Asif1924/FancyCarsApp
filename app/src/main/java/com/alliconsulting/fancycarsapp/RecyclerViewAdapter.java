@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -19,19 +20,17 @@ import com.bumptech.glide.Glide;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.hdodenhof.circleimageview.CircleImageView;
-
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>{
+
     private static final String TAG = "RecyclerViewAdapter";
 
-    private ArrayList<String> mImages = new ArrayList<>();
+    private ArrayList<String> mCarImages = new ArrayList<>();
     private ArrayList<CarDetails> mCarDetails = new ArrayList<>();
-
     private Context mContext;
 
     public RecyclerViewAdapter(Context context, ArrayList<String> images, ArrayList<CarDetails> carDetails) {
 
-        this.mImages = images;
+        this.mCarImages = images;
         this.mCarDetails = carDetails;
         this.mContext = context;
     }
@@ -50,14 +49,15 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         Glide.with(mContext)
                 .asBitmap()
-                .load(mImages.get(position))
+                .load(mCarImages.get(position))
                 .into(holder.image);
 
-        //holder.imageName.setText(mImageNames.get(position));
         holder.imageName.setText( "Make: " + mCarDetails.get(position).getCarMake() + "\nModel: " + mCarDetails.get(position).getCarModel() + "\nAvail?: " + mCarDetails.get(position).getAvailability());
+        holder.buyButton.setVisibility(View.INVISIBLE);
+        if( mCarDetails.get(position).getAvailability().equals("In Dealership") )
+            holder.buyButton.setVisibility(View.VISIBLE);
         holder.parentLayout.setOnClickListener(new View.OnClickListener(){
             public void onClick(View view){
-                //Log.d(TAG,"onClick: clicked on: " + mImageNames.get(position));
                 Log.d(TAG,"onClick: clicked on: " + mCarDetails.get(position).getCarMake());
                 Toast.makeText(mContext,mCarDetails.get(position).getCarMake(), Toast.LENGTH_SHORT).show();
             }
@@ -74,18 +74,20 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         //CircleImageView image;
         ImageView image;
         TextView imageName;
+        Button buyButton;
         RelativeLayout parentLayout;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             image = itemView.findViewById(R.id.car_image);
             imageName = itemView.findViewById(R.id.car_name);
+            buyButton = itemView.findViewById(R.id.buybutton);
             parentLayout = itemView.findViewById(R.id.car_simple_layout);
         }
     }
 
     public void updateListWithImages(List<String> newImages, List<CarDetails> carDetails){
-        mImages.addAll(newImages);
+        mCarImages.addAll(newImages);
         mCarDetails.addAll(carDetails);
         notifyDataSetChanged();
     }
