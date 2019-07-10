@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
         carImages.add("https://wallpaperaccess.com/full/148063.jpg");
         carImages.add("http://eskipaper.com/images/exotic-cars-22.jpg");
         carImages.add("https://cdn.wallpapersafari.com/81/92/RMp2ej.jpg");
-        carImages.add("http://www.52dazhew.com/data/out/79/586059127-exotic-cars-wallpaper-desktop.jpg");
+        carImages.add("http://bighpartybuses.com/images/1.png");
         carImages.add("https://wallpaperaccess.com/full/13714.jpg");
 
         carImages.add("http://1.bp.blogspot.com/-qZX1rBg4vfA/UtcKZS3mBKI/AAAAAAAANEE/11fjNqF5118/s1600/Exotic+Car+Pictures+Wallpaper2.jpg");
